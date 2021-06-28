@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8de6a58c5ecd3249a5b64a6e653a731, type: 3}
   m_Name: Chunk 2
   m_EditorClassIdentifier: 
-  leftEnd: {x: 10.2, y: -3.9}
-  rightEnd: {x: 10.2, y: 1.4}
+  leftEndY: 3.65
+  rightEndY: 2.6
