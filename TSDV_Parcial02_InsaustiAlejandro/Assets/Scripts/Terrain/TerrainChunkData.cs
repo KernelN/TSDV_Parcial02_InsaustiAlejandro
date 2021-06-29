@@ -10,15 +10,15 @@ public class TerrainChunkData : MonoBehaviour
     #endregion
 
     #region Unity Events
-    private void Start()
+    #endregion
+
+    #region Methods
+    public void GenerateChunkData()
     {
         SO = GetChunkSO();
         GetComponent<SpriteRenderer>().sprite = GetChunkSprite();
         UpdateColliderPhysicsShape();
     }
-    #endregion
-
-    #region Methods
     TerrainChunkScriptableObject GetChunkSO()
     {
         return (TerrainChunkScriptableObject)Resources.Load("ScriptableObjects/Terrain/Chunk" + chunkIndex);

@@ -3,6 +3,6 @@
 [CreateAssetMenu(fileName = "Terrain Chunk Coordinates")]
 public class TerrainChunkScriptableObject : ScriptableObject
 {
-    [SerializeField] float leftEndY;
-    [SerializeField] float rightEndY;
+    public float leftEndY;
+    public float rightEndY;
 }
