@@ -17,7 +17,7 @@ public class ShipController : MonoBehaviour
     {
         rocketForce = new Vector2(0,0);
         rotation = new Vector3(0,0,0);
-        rocketPropulsionEffect.active = false;
+        rocketPropulsionEffect.SetActive(false);
     }
     private void Update()
     {
@@ -44,7 +44,7 @@ public class ShipController : MonoBehaviour
     }
     void SetRocketPropulsion(bool turnOn)
     {
-        rocketPropulsionEffect.active = turnOn;
+        rocketPropulsionEffect.SetActive(turnOn);
     }
     void AddRocketForce()
     {

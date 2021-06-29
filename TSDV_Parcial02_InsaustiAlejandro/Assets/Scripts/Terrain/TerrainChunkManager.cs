@@ -14,6 +14,7 @@ public class TerrainChunkManager : MonoBehaviour
     [SerializeField] int differentTypesOfChunk;
     [SerializeField] Chunk[] chunks;
     [SerializeField] GameObject chunkPrefab;
+    [SerializeField] Transform chunksEmpty;
     const int chunkLength = 40;
     #endregion
 
@@ -30,15 +31,14 @@ public class TerrainChunkManager : MonoBehaviour
             {
                 if (i % 2 == 0)
                 {
-                    AccomodateChunkToTheLeft(i, i - 1);
+                    MoveChunkToTheLeft(i, i - 1);
                 }
                 else
                 {
-                    AccomodateChunkToTheRight(i, i - 1);
+                    MoveChunkToTheRight(i, i - 1);
                 }
             }
         }
-
     }
     #endregion
 
@@ -46,10 +46,11 @@ public class TerrainChunkManager : MonoBehaviour
     Chunk GenerateChunk()
     {
         //generate chunk Game Object
-        GameObject go = Instantiate(chunkPrefab);
+        GameObject go = Instantiate(chunkPrefab, chunksEmpty);
         TerrainChunkData chunkData = go.GetComponent<TerrainChunkData>();
         chunkData.chunkIndex = Random.Range(1, differentTypesOfChunk + 1);
         chunkData.GenerateChunkData();
+        go.name = "Chunk Type " + chunkData.chunkIndex;
 
         //Get chunk data
         Chunk chunk = new Chunk();
@@ -57,41 +58,61 @@ public class TerrainChunkManager : MonoBehaviour
         chunk.data = chunkData;
         return chunk;
     }
-    void AccomodateChunkToTheLeft(int leftIndex, int rightIndex)
+    void MoveChunkToTheLeft(int leftIndex, int rightIndex)
     {
         //get needed data
-        Transform leftTransform = chunks[leftIndex].transform;
-        Transform rightTransform = chunks[rightIndex].transform;
-        float leftLinkY = chunks[leftIndex].data.SO.rightEndY;
-        float rightLinkY = chunks[rightIndex].data.SO.leftEndY;
+        Transform leftT = chunks[leftIndex].transform;
+        Transform rightT = chunks[rightIndex].transform;
+        float leftLinkY = chunks[leftIndex].data.SO.rightEndY * leftT.localScale.y;
+        float rightLinkY = chunks[rightIndex].data.SO.leftEndY * rightT.localScale.y;
 
         //calculate positions
-        float xPosition = rightTransform.localPosition.x - chunkLength;
-        float yPosition =
-            rightTransform.localPosition.y +
-            (rightLinkY * rightTransform.localScale.y) -
-            (leftLinkY * leftTransform.localScale.y);
+        float xPosition = rightT.localPosition.x - chunkLength;
+        float yPosition = rightT.localPosition.y + (rightLinkY) - (leftLinkY );
 
         //set positions
-        leftTransform.localPosition = new Vector3(xPosition, yPosition, 0);
+        leftT.localPosition = new Vector3(xPosition, yPosition, 0);
+        chunks[leftIndex].data.onLeftSide = true;
     }
-    void AccomodateChunkToTheRight(int leftIndex, int rightIndex)
+    void MoveChunkToTheRight(int leftIndex, int rightIndex)
     {
         //get needed data
-        Transform leftTransform = chunks[leftIndex].transform;
-        Transform rightTransform = chunks[rightIndex].transform;
-        float leftLinkY = chunks[leftIndex].data.SO.rightEndY;
-        float rightLinkY = chunks[rightIndex].data.SO.leftEndY;
+        Transform leftT = chunks[leftIndex].transform;
+        Transform rightT = chunks[rightIndex].transform;
+        float leftLinkY = chunks[leftIndex].data.SO.rightEndY * leftT.localScale.y;
+        float rightLinkY = chunks[rightIndex].data.SO.leftEndY * rightT.localScale.y;
 
         //calculate positions
-        float xPosition = leftTransform.localPosition.x + chunkLength;
-        float yPosition =
-            leftTransform.localPosition.y +
-            (leftLinkY * leftTransform.localScale.y) -
-            (rightLinkY * rightTransform.localScale.y);
+        float xPosition = leftT.localPosition.x + chunkLength;
+        float yPosition = leftT.localPosition.y + (leftLinkY) - (rightLinkY);
 
         //set positions
-        rightTransform.localPosition = new Vector3(xPosition, yPosition, 0);
+        rightT.localPosition = new Vector3(xPosition, yPosition, 0);
+        chunks[rightIndex].data.onLeftSide = false;
     }
+   
+
+    //WIP, DON'T USE---------------------
+    void UpdatePlayerChunkPosition()
+    {
+        //bool chunkIsLinkedByTheRight = chunks[chunkUsedByplayer].data.onLeftSide;
+
+        //if (chunkIsLinkedByTheRight && player.localPosition.x < 0)
+        //{
+        //    MoveChunkToTheRight(0, chunkUsedByplayer);
+        //}
+        //else if (!chunkIsLinkedByTheRight && player.localPosition.x > 0)
+        //{
+        //    MoveChunkToTheRight(chunkUsedByplayer, chunks.Length - 1);
+        //}
+    }
+    void ChangePlayerParentChunk()
+    {
+        //if (player.localPosition.x > chunkLength / 2)
+        //{
+        //    //player.parent;
+        //}
+    }
+    //-----------------------------------
     #endregion
 }
