@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8de6a58c5ecd3249a5b64a6e653a731, type: 3}
-  m_Name: Chunk 3
+  m_Name: Chunk3
   m_EditorClassIdentifier: 
   leftEndY: 0.65
   rightEndY: 1.5
