@@ -3,18 +3,22 @@
 public class CameraController : MonoBehaviour
 {
     #region Variables
-    public float followRadius;
+    [SerializeField] float followRadius;
+    [SerializeField] float zoomInRadius;
     [SerializeField] GameObject zoomedOutCamera;
     [SerializeField] GameObject zoomedInCamera;
     [SerializeField] Transform player;
+    [SerializeField] Transform rightWall;
     Transform currentCamera;
     bool zoomIsOn = false;
     LayerMask mapLayer;
+    float maxXPos;
     #endregion
 
     #region Unity Events
     private void Start()
     {
+        maxXPos = rightWall.position.x - zoomInRadius;
         mapLayer = LayerMask.GetMask("Map");
         currentCamera = zoomedOutCamera.transform;
         player.GetComponent<ShipController>().OnAltitudeChange += AdjustZoom;
@@ -32,23 +36,35 @@ public class CameraController : MonoBehaviour
     #region Methods
     void FollowPlayer()
     {
-        if (zoomIsOn && Mathf.Abs(player.position.x - currentCamera.position.x) > followRadius)
-        {
-            currentCamera.position = new Vector3(GetNewXAxis(), currentCamera.position.y, currentCamera.position.z);
-        }
         if (Mathf.Abs(player.position.y - currentCamera.position.y) > followRadius)
         {
             currentCamera.position = new Vector3(currentCamera.position.x, GetNewYAxis(), currentCamera.position.z);
         }
+        if (!zoomIsOn) { return; }
+        if (Mathf.Abs(player.position.x - currentCamera.position.x) < followRadius) { return; }
+            currentCamera.position = new Vector3(GetNewXAxis(), currentCamera.position.y, currentCamera.position.z);
     }
     float GetNewXAxis()
     {
-        if (player.position.x > currentCamera.position.x + followRadius)
+        
+        if (player.position.x > currentCamera.position.x + followRadius) //move to the right
         {
+            //Prevent camera to getting too close to the edge
+            if (maxXPos - player.position.x < zoomInRadius)
+            {
+                return maxXPos - zoomInRadius;
+            }
+
             return player.position.x - followRadius;
         }
-        else if (player.position.x < currentCamera.position.x - followRadius)
+        else if (player.position.x < currentCamera.position.x - followRadius) //move to the left
         {
+            //Prevent camera to getting too close to the edge
+            if (-maxXPos - player.position.x < zoomInRadius)
+            {
+                return -maxXPos + zoomInRadius;
+            }
+
             return player.position.x + followRadius;
         }
 
@@ -69,7 +85,7 @@ public class CameraController : MonoBehaviour
     }
     void AdjustZoom(float playerDistanceToRock)
     {
-        RaycastHit2D hit = Physics2D.CircleCast(player.localPosition, followRadius * 2, -player.up, 0, mapLayer);
+        RaycastHit2D hit = Physics2D.CircleCast(player.localPosition, zoomInRadius, -player.up, 0, mapLayer);
         if (zoomIsOn && hit.collider == null)
         {
             zoomIsOn = false;
@@ -80,7 +96,7 @@ public class CameraController : MonoBehaviour
         else if (!zoomIsOn && hit.collider != null)
         {
             zoomIsOn = true;
-            zoomedInCamera.gameObject.SetActive(true);
+             zoomedInCamera.gameObject.SetActive(true);
             zoomedOutCamera.gameObject.SetActive(false);
             currentCamera = zoomedInCamera.transform;
         }
