@@ -8,12 +8,14 @@ public class ShipController : MonoBehaviour
     public UnityAction<float> OnAltitudeChange;
     public UnityAction<float> OnVerticalSpeedChange;
     public UnityAction<float> OnHorizontalSpeedChange;
-    [SerializeField] float shipTooCloseToRockDistance;
-    [SerializeField] float rocketPower;
-    [SerializeField] float rotationSpeed;
-    [SerializeField] float gravity;
-    [SerializeField] float fuel;
+    public float maxFuel { get; private set; }
+    public float fuel { get; private set; }
+    public float rocketPower { get { return data.rocketPower; } }
+    public float rotationSpeed { get { return data.rotationSpeed; } }
+    public float gravity { get { return data.gravity; } }
+    public float fuelUsePerSecond { get { return data.fuelUsePerSecond; } }
     [SerializeField] GameObject rocketPropulsionEffect;
+    ShipData data;
     Rigidbody2D rb;
     LayerMask mapLayer;
     Vector2 rocketForce;
@@ -26,6 +28,9 @@ public class ShipController : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
+        data = GetComponent<ShipData>();
+        maxFuel = data.maxFuel;
+        fuel = data.currentFuel;
         rb = GetComponent<Rigidbody2D>();
         mapLayer = LayerMask.GetMask("Map");
         rocketForce = new Vector2(0,0);
@@ -58,6 +63,7 @@ public class ShipController : MonoBehaviour
     #region Methods
     void UpdateGravity()
     {
+        if (rb.gravityScale == gravity) { return; }
         rb.gravityScale = gravity;
     }
     void SetRocketPropulsion(bool turnOn)
@@ -69,6 +75,9 @@ public class ShipController : MonoBehaviour
         rocketForce.y = rocketPower;
         rb.AddRelativeForce(rocketForce);
         SetRocketPropulsion(true);
+
+        fuel -= fuelUsePerSecond * Time.deltaTime;
+        //OnFuelChange.Invoke(fuel);
     }
     void Rotate()
     {

@@ -4766,6 +4766,7 @@ GameObject:
   - component: {fileID: 2571520973107288795}
   - component: {fileID: 2571520973107288798}
   - component: {fileID: 2571520973107288799}
+  - component: {fileID: 5800605721915700202}
   m_Layer: 0
   m_Name: Ship
   m_TagString: Untagged
@@ -4914,8 +4915,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 917debfd3543d7e4fa4bb425c80bb063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rocketPower: 15
-  rotationSpeed: 0
-  gravity: 1
-  rb: {fileID: 2571520973107288798}
   rocketPropulsionEffect: {fileID: 2571520972383756136}
+--- !u!114 &5800605721915700202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2571520973107288794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cd3b42d25f4d5c41b82b0de523922aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxFuel: 500
+  currentFuel: 0
+  fuelUsePerSecond: 2
+  rocketPower: 10
+  rotationSpeed: 5
+  gravity: 1
