@@ -25,14 +25,13 @@ public class GameplayManager : MonoBehaviour
     {
         score += 100;
         SaveScore();
-        screensManager.LoadInGame();
-        Debug.Log("Win");
+        OnScoreChange?.Invoke(score);
     }
     void ShipCrashed()
     {
+        score = 0;
         ResetScoreFile();
-        screensManager.LoadInGame();
-        Debug.Log("Lose");
+        OnScoreChange?.Invoke(score);
     }
     void SaveScore()
     {

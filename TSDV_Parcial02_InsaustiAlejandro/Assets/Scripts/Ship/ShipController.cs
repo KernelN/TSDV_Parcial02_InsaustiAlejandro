@@ -26,6 +26,7 @@ public class ShipController : MonoBehaviour
     Vector3 rotation;
     float vSpeed;
     float hSpeed;
+    bool gameOver;
     #endregion
 
     #region Unity Methods
@@ -42,7 +43,10 @@ public class ShipController : MonoBehaviour
     }
     private void Update()
     {
+        if (gameOver) { return; }
+
         UpdateGravity();
+
         CheckVSpeed();
         CheckHSpeed();
         CheckAltitude();
@@ -136,6 +140,7 @@ public class ShipController : MonoBehaviour
         {
             OnPlayerLand?.Invoke();
         }
+        gameOver = true;
     }
     #endregion
 }
