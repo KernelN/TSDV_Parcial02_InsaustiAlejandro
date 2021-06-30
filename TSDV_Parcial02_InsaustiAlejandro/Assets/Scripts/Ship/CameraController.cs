@@ -42,11 +42,11 @@ public class CameraController : MonoBehaviour
         }
         if (!zoomIsOn) { return; }
         if (Mathf.Abs(player.position.x - currentCamera.position.x) < followRadius) { return; }
-            currentCamera.position = new Vector3(GetNewXAxis(), currentCamera.position.y, currentCamera.position.z);
+        currentCamera.position = new Vector3(GetNewXAxis(), currentCamera.position.y, currentCamera.position.z);
     }
     float GetNewXAxis()
     {
-        
+
         if (player.position.x > currentCamera.position.x + followRadius) //move to the right
         {
             //Prevent camera to getting too close to the edge
@@ -96,7 +96,7 @@ public class CameraController : MonoBehaviour
         else if (!zoomIsOn && hit.collider != null)
         {
             zoomIsOn = true;
-             zoomedInCamera.gameObject.SetActive(true);
+            zoomedInCamera.gameObject.SetActive(true);
             zoomedOutCamera.gameObject.SetActive(false);
             currentCamera = zoomedInCamera.transform;
         }
