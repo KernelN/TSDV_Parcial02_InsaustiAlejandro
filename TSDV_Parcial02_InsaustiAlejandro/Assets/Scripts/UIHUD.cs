@@ -11,12 +11,13 @@ public class UIHUD : MonoBehaviour
 	[SerializeField] TextMeshProUGUI verticalSpeed;
 	[SerializeField] TextMeshProUGUI horizontalSpeed;
 	[SerializeField] ShipController player;
+    float maxFuel = 0;
     #endregion
 
     #region Unity Events
     private void Start()
     {
-        //↑↓→←
+        maxFuel = player.maxFuel;
         //player.OnAltitudeChange += UpdateScore;
         player.OnFuelChange += UpdateFuel;
         player.OnAltitudeChange += UpdateHeight;
@@ -36,7 +37,11 @@ public class UIHUD : MonoBehaviour
     }
     void UpdateFuel(float newFuel)
     {
-        fuel.text = newFuel.ToString("00%");
+        if (maxFuel == 0)
+        {
+            maxFuel = newFuel;
+        }
+        fuel.text = (newFuel / maxFuel).ToString("00%");
     }
     void UpdateHeight(float newHeight)
     {

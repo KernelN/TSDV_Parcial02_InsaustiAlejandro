@@ -30,7 +30,7 @@ public class ShipController : MonoBehaviour
     {
         data = GetComponent<ShipData>();
         maxFuel = data.maxFuel;
-        fuel = data.currentFuel;
+        fuel = maxFuel;
         rb = GetComponent<Rigidbody2D>();
         mapLayer = LayerMask.GetMask("Map");
         rocketForce = new Vector2(0,0);
@@ -77,7 +77,7 @@ public class ShipController : MonoBehaviour
         SetRocketPropulsion(true);
 
         fuel -= fuelUsePerSecond * Time.deltaTime;
-        //OnFuelChange.Invoke(fuel);
+        OnFuelChange.Invoke(fuel);
     }
     void Rotate()
     {
