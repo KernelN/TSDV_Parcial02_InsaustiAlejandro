@@ -27,10 +27,6 @@ public class CameraController : MonoBehaviour
     {
         FollowPlayer();
     }
-    private void OnDisable()
-    {
-        player.GetComponent<ShipController>().OnAltitudeChange -= AdjustZoom;
-    }
     #endregion
 
     #region Methods

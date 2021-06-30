@@ -6,6 +6,7 @@ public class GameplayManager : MonoBehaviour
     #region Variables
     public UnityEngine.Events.UnityAction<int> OnScoreChange;
     public int score;
+    [SerializeField] ScreensManager screensManager;
     [SerializeField] ShipController player;
     #endregion
 
@@ -24,13 +25,13 @@ public class GameplayManager : MonoBehaviour
     {
         score += 100;
         SaveScore();
-        ScreensManager.LoadInGame();
+        screensManager.LoadInGame();
         Debug.Log("Win");
     }
     void ShipCrashed()
     {
         ResetScoreFile();
-        ScreensManager.LoadInGame();
+        screensManager.LoadInGame();
         Debug.Log("Lose");
     }
     void SaveScore()
