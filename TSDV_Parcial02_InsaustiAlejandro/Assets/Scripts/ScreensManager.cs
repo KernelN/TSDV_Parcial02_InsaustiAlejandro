@@ -4,20 +4,21 @@ public class ScreensManager : MonoBehaviour
 {
 	enum Scenes { MAIN_MENU, IN_GAME};
 
-	public void LoadMainMenu()
+	public static void LoadMainMenu()
     {
 		SceneManager.LoadScene("MainMenu");
     }
-	public void LoadInGame()
+	public static void LoadInGame()
 	{
 		SceneManager.LoadScene("InGame");
 	}
-	public void LoadCredits()
+	public static void LoadCredits()
 	{
 		SceneManager.LoadScene("Credits");
 	}
-	public void Quit()
+	public static void Quit()
     {
+		GameplayManager.ResetScoreFile();
 		Application.Quit();
     }
 }

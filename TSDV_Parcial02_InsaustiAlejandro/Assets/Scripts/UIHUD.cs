@@ -11,6 +11,7 @@ public class UIHUD : MonoBehaviour
 	[SerializeField] TextMeshProUGUI verticalSpeed;
 	[SerializeField] TextMeshProUGUI horizontalSpeed;
 	[SerializeField] ShipController player;
+	[SerializeField] GameplayManager gameplayManager;
     float maxFuel = 0;
     #endregion
 
@@ -18,7 +19,7 @@ public class UIHUD : MonoBehaviour
     private void Start()
     {
         maxFuel = player.maxFuel;
-        //player.OnAltitudeChange += UpdateScore;
+        gameplayManager.OnScoreChange += UpdateScore;
         player.OnFuelChange += UpdateFuel;
         player.OnAltitudeChange += UpdateHeight;
         player.OnVerticalSpeedChange += UpdateVSpeed;

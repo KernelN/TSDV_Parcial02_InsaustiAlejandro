@@ -35,3 +35,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+TSDV_Parcial02_InsaustiAlejandro/Assets/Saves.meta
+TSDV_Parcial02_InsaustiAlejandro/Assets/Saves/score.dat.meta
+TSDV_Parcial02_InsaustiAlejandro/Assets/Saves/score.dat
