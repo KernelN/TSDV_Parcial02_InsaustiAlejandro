@@ -115,7 +115,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -168,7 +168,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: -5
+      scalar: -15
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -865,7 +865,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 30
+      scalar: 45
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -4916,6 +4916,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rocketPropulsionEffect: {fileID: 2571520972383756136}
+  minAltitudeForCollisionDetect: 5
+  collisionDetectionRadius: 1.5
 --- !u!114 &5800605721915700202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4928,9 +4930,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cd3b42d25f4d5c41b82b0de523922aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxFuel: 500
-  currentFuel: 0
-  fuelUsePerSecond: 2
-  rocketPower: 10
+  maxFuel: 100
+  fuelUsePerSecond: 0.5
+  rocketPower: 15
   rotationSpeed: 5
   gravity: 1
