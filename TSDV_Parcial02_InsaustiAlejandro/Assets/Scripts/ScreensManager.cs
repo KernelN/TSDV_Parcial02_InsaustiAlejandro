@@ -4,6 +4,11 @@ public class ScreensManager : MonoBehaviour
 {
 	enum Scenes { MAIN_MENU, IN_GAME};
 
+    private void OnApplicationQuit()
+    {
+		GameplayManager.ResetScoreFile();
+	}
+
 	public void LoadMainMenu()
     {
 		SceneManager.LoadScene("MainMenu");
@@ -18,7 +23,6 @@ public class ScreensManager : MonoBehaviour
 	}
 	public void Quit()
     {
-		GameplayManager.ResetScoreFile();
 		Application.Quit();
     }
 }
