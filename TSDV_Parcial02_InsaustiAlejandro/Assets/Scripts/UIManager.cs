@@ -2,13 +2,11 @@
 
 public class UIManager : MonoBehaviour
 {
-	#region Variables
 	[SerializeField] GameObject HUD;
 	[SerializeField] GameObject pause;
 	[SerializeField] GameObject gameOver;
 	[SerializeField] ShipController player;
     bool playerWinned;
-    #endregion
 
     #region Unity Events
     private void Start()

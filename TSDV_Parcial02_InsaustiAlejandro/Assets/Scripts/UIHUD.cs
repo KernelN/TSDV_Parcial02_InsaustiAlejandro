@@ -3,7 +3,6 @@ using TMPro;
 
 public class UIHUD : MonoBehaviour
 {
-	#region Variables
 	[SerializeField] TextMeshProUGUI score;
 	[SerializeField] TextMeshProUGUI fuel;
 	[SerializeField] TextMeshProUGUI time;
@@ -13,7 +12,6 @@ public class UIHUD : MonoBehaviour
 	[SerializeField] ShipController player;
 	[SerializeField] GameplayManager gameplayManager;
     float maxFuel = 0;
-    #endregion
 
     #region Unity Events
     private void Start()

@@ -9,14 +9,12 @@ public class TerrainChunkManager : MonoBehaviour
         public Transform transform;
         public TerrainChunkData data;
     }
-
-    #region Variables
+    
     [SerializeField] int differentTypesOfChunk;
     [SerializeField] Chunk[] chunks;
     [SerializeField] GameObject chunkPrefab;
     [SerializeField] Transform chunksEmpty;
     const int chunkLength = 40;
-    #endregion
 
     #region Unity Events
     private void Start()
