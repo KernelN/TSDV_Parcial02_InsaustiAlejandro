@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] GameObject zoomedOutCamera;
     [SerializeField] GameObject zoomedInCamera;
     [SerializeField] Transform player;
-    [SerializeField] Transform rightWall;
+    [SerializeField] GameplayManager gameManager;
     Transform currentCamera;
     bool zoomIsOn = false;
     LayerMask mapLayer;
@@ -18,7 +18,7 @@ public class CameraController : MonoBehaviour
     #region Unity Events
     private void Start()
     {
-        maxXPos = rightWall.position.x - zoomInRadius;
+        maxXPos = gameManager.mapLimit.x + 5 - zoomInRadius;
         mapLayer = LayerMask.GetMask("Map");
         currentCamera = zoomedOutCamera.transform;
         player.GetComponent<ShipController>().OnAltitudeChange += AdjustZoom;

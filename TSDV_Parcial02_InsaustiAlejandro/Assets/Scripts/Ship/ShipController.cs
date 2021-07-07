@@ -17,10 +17,12 @@ public class ShipController : MonoBehaviour
     public float gravity { get { return data.gravity; } }
     public float fuelUsePerSecond { get { return data.fuelUsePerSecond; } }
     [SerializeField] GameObject rocketPropulsionEffect;
+    [SerializeField] GameplayManager gameManager;
     [SerializeField] float minAltitudeForCollisionDetect;
     [SerializeField] float collisionDetectionRadius;
     ShipData data;
     Rigidbody2D rb;
+    Collider2D shipCollider;
     LayerMask mapLayer;
     Vector2 rocketForce;
     Vector3 rotation;
@@ -32,6 +34,7 @@ public class ShipController : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
+        shipCollider = GetComponent<Collider2D>();
         data = GetComponent<ShipData>();
         maxFuel = data.maxFuel;
         fuel = maxFuel;
@@ -46,13 +49,18 @@ public class ShipController : MonoBehaviour
         if (gameOver) { return; }
 
         UpdateGravity();
+        KeepShipOnMap();
 
         CheckVSpeed();
         CheckHSpeed();
         CheckAltitude();
-        if (altitude < transform.localScale.y * minAltitudeForCollisionDetect)
+        if (!shipCollider.enabled && altitude < transform.localScale.y * minAltitudeForCollisionDetect)
         {
-            CheckCollision();
+            shipCollider.enabled = true;
+        }
+        else if (shipCollider.enabled && altitude > transform.localScale.y * minAltitudeForCollisionDetect)
+        {
+            shipCollider.enabled = false;
         }
 
         if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.UpArrow))
@@ -68,6 +76,32 @@ public class ShipController : MonoBehaviour
         {
             Rotate();
         }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //player dies if touches land at high speed or at the wrong angle
+        if (Mathf.Abs(vSpeed) + Mathf.Abs(hSpeed) > rocketPower * 0.75f || (transform.eulerAngles.z > 5 && transform.eulerAngles.z < 355))
+        {
+            OnPlayerDeath?.Invoke();
+            return;
+        }
+
+        //if player is still and touching land
+        Vector2 leftPos = new Vector2(transform.localPosition.x - transform.localScale.x / 3, transform.localPosition.y); ;
+        Vector2 rightPos = new Vector2(transform.localPosition.x + transform.localScale.x / 3, transform.localPosition.y); ;
+        float rayLength = transform.localScale.y * 2;
+        RaycastHit2D hitLeft = Physics2D.Raycast(leftPos, Vector2.down, rayLength, mapLayer);
+        RaycastHit2D hitRight = Physics2D.Raycast(rightPos, Vector2.down, rayLength, mapLayer);
+        //if both feet are on ground, land succesfully
+        if (hitLeft.collider && hitRight.collider)
+        {
+            OnPlayerLand?.Invoke();
+        }
+        else
+        {
+            OnPlayerDeath?.Invoke();
+        }
+        gameOver = true;
     }
     #endregion
 
@@ -97,7 +131,6 @@ public class ShipController : MonoBehaviour
         rotation.z = -Input.GetAxis("Horizontal");
         transform.Rotate(rotation);
     }
-
     void CheckVSpeed()
     {
         if (vSpeed != rb.velocity.y)
@@ -106,7 +139,6 @@ public class ShipController : MonoBehaviour
             OnVerticalSpeedChange.Invoke(vSpeed);
         }
     }
-
     void CheckHSpeed()
     {
         if (hSpeed != rb.velocity.x)
@@ -126,21 +158,22 @@ public class ShipController : MonoBehaviour
         altitude = hit.distance;
         OnAltitudeChange?.Invoke(altitude);
     }
-    void CheckCollision()
+    void KeepShipOnMap()
     {
-        RaycastHit2D hit = Physics2D.CircleCast(transform.localPosition, collisionDetectionRadius, -Vector3.up, 0, mapLayer);
-        if (hit.collider == null) { return; }
+        Vector2 mapLimit = gameManager.mapLimit;
+        if (transform.position.y > mapLimit.y)
+        {
+            transform.Translate(Vector3.down * (transform.position.y - (mapLimit.y + 1)));
+        }
 
-        //player dies if touches land at high speed or at the wrong angle
-        if (Mathf.Abs(vSpeed) + Mathf.Abs(hSpeed) > rocketPower * 0.75f || (transform.eulerAngles.z > 5 && transform.eulerAngles.z < 355))
+        if (transform.position.x > mapLimit.x)
         {
-            OnPlayerDeath?.Invoke();
+            transform.Translate(Vector3.left * (transform.position.x - (mapLimit.x + 1)));
         }
-        else //if player is still and touching land, land
+        else if (transform.position.x < -mapLimit.x)
         {
-            OnPlayerLand?.Invoke();
+            transform.Translate(Vector3.right * (-(mapLimit.x + 1) - transform.position.x));
         }
-        gameOver = true;
     }
     #endregion
 }
