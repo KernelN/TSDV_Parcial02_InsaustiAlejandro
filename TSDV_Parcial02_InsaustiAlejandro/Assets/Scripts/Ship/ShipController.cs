@@ -3,7 +3,6 @@ using UnityEngine.Events;
 
 public class ShipController : MonoBehaviour
 {
-    #region Variables
     public UnityAction<float> OnFuelChange;
     public UnityAction<float> OnAltitudeChange;
     public UnityAction<float> OnVerticalSpeedChange;
@@ -28,8 +27,8 @@ public class ShipController : MonoBehaviour
     Vector3 rotation;
     float vSpeed;
     float hSpeed;
+    float altitude;
     bool gameOver;
-    #endregion
 
     #region Unity Methods
     private void Start()
@@ -147,8 +146,6 @@ public class ShipController : MonoBehaviour
             OnHorizontalSpeedChange.Invoke(hSpeed);
         }
     }
-
-    float altitude;
     void CheckAltitude()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.localPosition, -Vector3.up, 100, mapLayer);

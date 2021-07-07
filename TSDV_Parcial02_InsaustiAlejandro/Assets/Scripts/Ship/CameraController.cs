@@ -2,7 +2,6 @@
 
 public class CameraController : MonoBehaviour
 {
-    #region Variables
     [SerializeField] float followRadius;
     [SerializeField] float zoomInRadius;
     [SerializeField] GameObject zoomedOutCamera;
@@ -13,7 +12,6 @@ public class CameraController : MonoBehaviour
     bool zoomIsOn = false;
     LayerMask mapLayer;
     float maxXPos;
-    #endregion
 
     #region Unity Events
     private void Start()

@@ -3,11 +3,9 @@ using UnityEngine;
 
 public class TerrainChunkData : MonoBehaviour
 {
-    #region Variables
     public int chunkIndex;
     public bool onLeftSide;
     public TerrainChunkScriptableObject SO { get; private set; }
-    #endregion
 
     #region Unity Events
     #endregion

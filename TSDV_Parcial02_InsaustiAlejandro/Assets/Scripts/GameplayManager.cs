@@ -3,13 +3,11 @@ using UnityEngine;
 
 public class GameplayManager : MonoBehaviour
 {
-    #region Variables
     public UnityEngine.Events.UnityAction<int> OnScoreChange;
     public int score;
     public Vector2 mapLimit;
     [SerializeField] ScreensManager screensManager;
     [SerializeField] ShipController player;
-    #endregion
 
     #region Unity Events
     private void Start()
