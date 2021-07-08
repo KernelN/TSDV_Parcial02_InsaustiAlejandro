@@ -61,7 +61,9 @@ public class ShipController : MonoBehaviour
         {
             shipCollider.enabled = false;
         }
-
+    }
+    private void FixedUpdate()
+    {
         if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.UpArrow))
         {
             AddRocketForce();
